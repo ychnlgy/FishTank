@@ -15,12 +15,15 @@ namespace FishTank
         SpriteBatch spriteBatch;
         EntityManager manager;
 
+        Vector2 tankDim;
+
         public Game()
         {
+            tankDim = new Vector2(1280, 640);
             graphics = new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = 1280,
-                PreferredBackBufferHeight = 640
+                PreferredBackBufferWidth = (int) tankDim.X,
+                PreferredBackBufferHeight = (int) tankDim.Y
             };
             Content.RootDirectory = "Content";
             manager = new EntityManager();
@@ -53,8 +56,12 @@ namespace FishTank
 
             manager.Add(new Entity(backgroundCreator.Create("resources/tank")));
 
-            Entity fish1 = new Entity(characterCreator.Create("resources/fish1"), new Vector2(150, 200), false);
-            Entity fish2 = new Entity(characterCreator.Create("resources/fish2"), new Vector2(250, 300), false);
+            Entity fish1 = new Fish(
+                characterCreator.Create("resources/fish1"), new Vector2(150, 200), false,
+                180, 80, tankDim);
+            Entity fish2 = new Fish(
+                characterCreator.Create("resources/fish2"), new Vector2(250, 300), false,
+                180, 80, tankDim);
             Entity shrimp = new Entity(characterCreator.Create("resources/shrimp"), new Vector2(800, 500), true);
             manager.Add(fish1);
             manager.Add(fish2);

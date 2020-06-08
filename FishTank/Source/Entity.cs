@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 namespace FishTank.Source
 {
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
 
     public class Entity
     {
-        Image img;
+        protected Image img;
         protected Vector2 pos;
         protected bool flip;
         protected float rotation;
@@ -26,7 +25,7 @@ namespace FishTank.Source
             Init(img, pos, flip);
         }
 
-        public void Update(float dt)
+        public virtual void Update(float dt)
         {
 
         }

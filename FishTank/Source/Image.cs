@@ -44,6 +44,15 @@ namespace FishTank.Source
             batcher.Draw(tex, rect, null, Color.White, rotation, new Vector2(0), flipEff, 0f);
         }
 
+        public Rectangle GetBaseRectangle()
+        {
+            int w = (int)(tex.Width * scale);
+            int h = (int)(tex.Height * scale);
+            int x = (int)(-localHeadPos.X * scale);
+            int y = (int)(-localHeadPos.Y * scale);
+            return new Rectangle(x, y, w, h);
+        }
+
         // === PRIVATE ===
 
         private void Init(
@@ -81,13 +90,6 @@ namespace FishTank.Source
             );
         }
 
-        private Rectangle GetBaseRectangle()
-        {
-            int w = (int)(tex.Width * scale);
-            int h = (int)(tex.Height * scale);
-            int x = (int)(-localHeadPos.X * scale);
-            int y = (int)(-localHeadPos.Y * scale);
-            return new Rectangle(x, y, w, h);
-        }
+        
     }
 }

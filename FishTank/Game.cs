@@ -4,18 +4,27 @@ using Microsoft.Xna.Framework.Input;
 
 namespace FishTank
 {
+    using FishTank.Source;
+
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class Game : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
-        public Game1()
+        EntityManager manager;
+
+        public Game()
         {
-            graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = 1280,
+                PreferredBackBufferHeight = 640
+            };
             Content.RootDirectory = "Content";
+            manager = new EntityManager();
+            
         }
 
         /// <summary>
@@ -39,8 +48,21 @@ namespace FishTank
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            ImageCreator backgroundCreator = new ImageCreator(1f, spriteBatch, Content);
+            ImageCreator characterCreator = new ImageCreator(0.5f, spriteBatch, Content);
 
-            // TODO: use this.Content to load your game content here
+            manager.Add(new Entity(backgroundCreator.Create("resources/tank")));
+
+            Entity fish1 = new Entity(characterCreator.Create("resources/fish1"), new Vector2(150, 200), false);
+            Entity fish2 = new Entity(characterCreator.Create("resources/fish2"), new Vector2(250, 300), false);
+            Entity shrimp = new Entity(characterCreator.Create("resources/shrimp"), new Vector2(800, 500), true);
+            manager.Add(fish1);
+            manager.Add(fish2);
+            manager.Add(shrimp);
+
+            manager.Add(new Entity(backgroundCreator.Create("resources/plants")));
+            manager.Add(new Entity(backgroundCreator.Create("resources/rocks")));
+            manager.Add(new Entity(backgroundCreator.Create("resources/sand")));
         }
 
         /// <summary>
@@ -62,7 +84,8 @@ namespace FishTank
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            manager.Update(dt);
 
             base.Update(gameTime);
         }
@@ -73,9 +96,9 @@ namespace FishTank
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            manager.Draw();
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
